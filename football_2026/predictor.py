@@ -431,7 +431,7 @@ class WorldCupPredictor:
 
         return probs, pos_probs, champion_counts
 
-    def predict_tournament(self, ref_date: Optional[date] = None, skip_mc: bool = False) -> PredictionResults:
+    def predict_tournament(self, ref_date: Optional[date] = None, skip_mc: bool = False, compute_backtest: bool = True) -> PredictionResults:
         """Run full prediction pipeline and return structured results."""
         if ref_date is None:
             ref_date = date.today()
@@ -452,7 +452,7 @@ class WorldCupPredictor:
                 backtest_metrics=None,
             )
 
-        if self.user_results:
+        if self.user_results and compute_backtest:
             self._backtest_metrics = self.backtest_user_results()
 
         tournament_probs, pos_probs, champion_counts = self.run_monte_carlo()
@@ -493,9 +493,10 @@ class WorldCupPredictor:
             backtest_metrics=self._backtest_metrics,
         )
 
-    def save_outputs(self, ref_date: Optional[date] = None):
+    def save_outputs(self, ref_date: Optional[date] = None, predictions: PredictionResults = None):
         """Save all prediction outputs to CSV/JSON files."""
-        results = self.predict_tournament(ref_date)
+        if predictions is None:
+            predictions = self.predict_tournament(ref_date)
 
         if len(results.group_match_predictions) > 0:
             results.group_match_predictions.to_csv(

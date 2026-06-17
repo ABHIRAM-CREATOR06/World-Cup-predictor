@@ -16,10 +16,10 @@ import argparse
 from predictor import WorldCupPredictor, OUT_DIR
 
 
-def run_predictions(predictor: WorldCupPredictor, ref_date=None, show_backtest=True):
+def run_predictions(predictor: WorldCupPredictor, ref_date=None, show_backtest=True, run_mc=True):
     """Run and display predictions."""
     print("Building predictor...")
-    results = predictor.predict_tournament(ref_date)
+    results = predictor.predict_tournament(ref_date, skip_mc=not run_mc, compute_backtest=show_backtest)
 
     if show_backtest and results.backtest_metrics and results.backtest_metrics.get("n_matches", 0) > 0:
         print("\n" + "=" * 70)
