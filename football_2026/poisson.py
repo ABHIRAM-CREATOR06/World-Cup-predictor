@@ -24,7 +24,7 @@ LEAGUE_AVG_GOALS = 1.35  # ~ long-run goals scored per team per game (full inter
 RHO = 0.15
 
 # Recency half-life: matches older than 2*HALF_LIFE days have ~25% the weight
-HALF_LIFE_DAYS = 730  # 2 years
+HALF_LIFE_DAYS = 1095  # 3 years - balanced recency weighting
 
 # Tournament importance for weight in attack/defense estimation
 WEIGHTS = {
