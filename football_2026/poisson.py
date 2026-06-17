@@ -65,7 +65,7 @@ def estimate_ratings(
     results: pd.DataFrame,
     *,
     ref_date: pd.Timestamp | None = None,
-    min_matches: int = 5,
+    min_matches: int = 20,
     shrink_to: float = 1.0,
 ) -> tuple[dict[str, float], dict[str, float], float]:
     """Return (attack, defense, league_avg) dicts.
@@ -78,6 +78,8 @@ def estimate_ratings(
     For teams with very few matches we shrink their estimate toward 1.0
     (the league average). Shrinkage is controlled by `shrink_to` (the prior
     multiplier; usually 1.0) and the match-count-based weight.
+
+    Higher min_matches (20) for better accuracy with limited-data teams.
     """
     if ref_date is None:
         ref_date = results["date"].max()

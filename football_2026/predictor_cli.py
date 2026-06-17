@@ -48,19 +48,20 @@ def run_predictions(predictor: WorldCupPredictor, ref_date=None, show_backtest=T
                 print(f"  {letter} {r['home']:20s} vs {r['away']:20s}  "
                       f"P(H/D/A): {r['ph']:.2f}/{r['pd']:.2f}/{r['pa']:.2f}")
 
-    predictor.save_outputs(ref_date)
+    predictor.save_outputs(ref_date, predictions=results)
     print(f"\nOutputs saved to {OUT_DIR}")
 
 
 def main():
-    import sys
     parser = argparse.ArgumentParser(description="World Cup 2026 predictor")
     parser.add_argument("--load-results", type=Path, help="Path to CSV with match results")
     parser.add_argument("--date", type=str, help="Reference date (YYYY-MM-DD)")
     parser.add_argument("--sims", type=int, default=5000, help="Number of Monte Carlo simulations")
-    parser.add_argument("--no-backtrack", action="store_true", help="Don't show backtest metrics")
+    parser.add_argument("--skip-mc", action="store_true", help="Skip Monte Carlo (only predictions)")
+    parser.add_argument("--skip-backtest", action="store_true", help="Skip backtest computation")
     args = parser.parse_args()
 
+    # Skip backtest by default for performance - use --skip-backtest to enable
     predictor = WorldCupPredictor(n_simulations=args.sims)
 
     if args.load_results:
@@ -68,7 +69,7 @@ def main():
         print(f"Loaded {n} results from {args.load_results}")
 
     ref_date = pd.Timestamp(args.date).date() if args.date else None
-    run_predictions(predictor, ref_date, show_backtest=not args.no_backtrack)
+    run_predictions(predictor, ref_date, show_backtest=not args.skip_backtest, run_mc=not args.skip_mc)
 
 
 if __name__ == "__main__":

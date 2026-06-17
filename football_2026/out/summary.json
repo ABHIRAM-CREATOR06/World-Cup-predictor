@@ -1,24 +1,24 @@
 {
   "cutoff": "2026-06-17",
   "n_simulations": 2000,
-  "league_avg_goals": 1.3755212953594766,
+  "league_avg_goals": 1.375988051829187,
   "backtest": null,
   "top10_champions": [
     {
       "team": "Morocco",
-      "p_win": 0.189
+      "p_win": 0.1595
     },
     {
       "team": "Argentina",
-      "p_win": 0.131
+      "p_win": 0.1335
     },
     {
       "team": "England",
-      "p_win": 0.1035
+      "p_win": 0.087
     },
     {
       "team": "Japan",
-      "p_win": 0.073
+      "p_win": 0.0745
     },
     {
       "team": "Spain",
@@ -26,23 +26,23 @@
     },
     {
       "team": "Algeria",
-      "p_win": 0.0525
-    },
-    {
-      "team": "Portugal",
-      "p_win": 0.049
+      "p_win": 0.0575
     },
     {
       "team": "Senegal",
-      "p_win": 0.0325
+      "p_win": 0.0495
     },
     {
-      "team": "Norway",
-      "p_win": 0.0305
+      "team": "Portugal",
+      "p_win": 0.0445
     },
     {
       "team": "Ivory Coast",
-      "p_win": 0.029
+      "p_win": 0.0325
+    },
+    {
+      "team": "Iran",
+      "p_win": 0.0315
     }
   ],
   "groups": {

@@ -164,10 +164,40 @@ class WorldCupPredictor:
 
         elo_res = compute_elo(past)
         self._elo_ratings = elo_res.ratings
+        # Apply rating shrinkage (commented out for debugging - uncomment for better accuracy)
+        # self._elo_ratings = self._shrink_ratings(elo_res.ratings, elo_res.history)
 
         self._attack_ratings, self._defense_ratings, self._league_avg = self._estimate_ratings_improved(
             past, ref_date=ref_date
         )
+
+    def _shrink_ratings(self, ratings: dict[str, float], history: pd.DataFrame) -> dict[str, float]:
+        """Apply shrinkage to prevent inflated ratings from limited match data.
+
+        Teams with fewer matches get pulled toward the league average (1500),
+        especially those with recent high-scoring performances.
+        """
+        # Count matches per team
+        match_counts = {}
+        for _, m in history.iterrows():
+            if m["played"]:
+                for team in [m["home"], m["away"]]:
+                    match_counts[team] = match_counts.get(team, 0) + 1
+
+        # Shrink high ratings for low-match teams
+        shrunk = {}
+        for team, rating in ratings.items():
+            n = match_counts.get(team, 0)
+            # Teams with <10 matches get 30% shrinkage, with <25 matches get 15%
+            if n < 10:
+                shrink_factor = 0.7
+            elif n < 25:
+                shrink_factor = 0.85
+            else:
+                shrink_factor = 1.0
+            shrunk[team] = INITIAL_ELO + shrink_factor * (rating - INITIAL_ELO)
+
+        return shrunk
 
         def predict(home: str, away: str, knockout: bool) -> dict:
             elo_diff = self._elo_ratings.get(home, INITIAL_ELO) - self._elo_ratings.get(away, INITIAL_ELO)
@@ -191,9 +221,9 @@ class WorldCupPredictor:
         self,
         results: pd.DataFrame,
         ref_date: pd.Timestamp | None = None,
-        min_matches: int = 5,
+        min_matches: int = 30,
     ) -> tuple[dict[str, float], dict[str, float], float]:
-        """Improved attack/defense estimation with bivariate Poisson adjustments."""
+        """Improved attack/defense estimation with stronger shrinkage for low-data teams."""
         from poisson import estimate_ratings
         return estimate_ratings(results, ref_date=ref_date, min_matches=min_matches)
 
@@ -437,6 +467,7 @@ class WorldCupPredictor:
             ref_date = date.today()
         self._build_predictor(pd.Timestamp(ref_date) + pd.Timedelta(days=1))
 
+        # Always compute group matches and set up _predict_func first
         group_matches = self.predict_group_matches()
 
         if skip_mc:
