@@ -184,10 +184,18 @@ def match_outcome_probs(
     lam_h, lam_a = expected_goals(
         home, away, attack, defense, league_avg, neutral=neutral, elo_diff=elo_diff
     )
-    from scipy.stats import poisson
     gh = poisson.pmf(np.arange(max_goals + 1), lam_h)
     ga = poisson.pmf(np.arange(max_goals + 1), lam_a)
     matrix = np.outer(gh, ga)
+
+    if rho > 0:
+        for i in range(max_goals + 1):
+            for j in range(max_goals + 1):
+                if i > 0 and j > 0:
+                    corr_correction = rho * np.sqrt(gh[i] * ga[j])
+                    matrix[i, j] = max(0, gh[i] * ga[j] + corr_correction * np.sqrt(gh[i] * ga[j]))
+        matrix = matrix / matrix.sum()
+
     ph = float(np.tril(matrix, -1).sum())
     pd = float(np.diag(matrix).sum())
     pa = float(np.triu(matrix, 1).sum())
