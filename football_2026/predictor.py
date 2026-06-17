@@ -1,0 +1,405 @@
+"""Interactive World Cup predictor model.
+
+Allows users to add match results dynamically, which updates ELO ratings,
+attack/defense ratings, and tournament predictions.
+"""
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass, field
+from datetime import date
+from pathlib import Path
+from typing import Optional
+
+import numpy as np
+import pandas as pd
+
+from data import load_results, load_former_names, build_name_map, normalize_teams, identify_2026_groups
+from elo import compute_elo, INITIAL_ELO
+from poisson import estimate_ratings, match_outcome_probs
+from simulator import precompute_pair_cache, simulate_tournament, R32_BRACKET
+
+
+OUT_DIR = Path(__file__).parent / "out"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+
+@dataclass
+class MatchResult:
+    """A single match result."""
+    date: date
+    home_team: str
+    away_team: str
+    home_score: int
+    away_score: int
+    tournament: str = "FIFA World Cup"
+    city: str = ""
+    country: str = ""
+    neutral: bool = False
+
+
+@dataclass
+class PredictionResults:
+    """Container for prediction outputs."""
+    group_match_predictions: pd.DataFrame
+    tournament_probs: pd.DataFrame
+    group_position_probs: pd.DataFrame
+    elo_ratings: dict[str, float]
+    attack_ratings: dict[str, float]
+    defense_ratings: dict[str, float]
+    league_avg_goals: float
+    champion_probs: dict[str, float]
+
+
+class WorldCupPredictor:
+    """Interactive World Cup 2026 predictor.
+
+    Usage:
+        predictor = WorldCupPredictor()
+        predictor.add_result(date(2026, 6, 11), "Mexico", "South Africa", 2, 0)
+        results = predictor.predict_tournament()
+        predictor.save_outputs()
+    """
+
+    def __init__(self, n_simulations: int = 20000, rng_seed: int = 20260611):
+        self.n_simulations = n_simulations
+        self.rng_seed = rng_seed
+        self.user_results: list[MatchResult] = []
+        self._groups: Optional[dict[str, list[str]]] = None
+        self._all_teams: Optional[list[str]] = None
+        self._cache: Optional[dict] = None
+        self._predict_func = None
+        self._elo_ratings: Optional[dict[str, float]] = None
+        self._attack_ratings: Optional[dict[str, float]] = None
+        self._defense_ratings: Optional[dict[str, float]] = None
+        self._league_avg: Optional[float] = None
+
+        self._load_base_data()
+
+    def _load_base_data(self):
+        """Load historical results and compute initial state."""
+        self._results = load_results()
+        fn = load_former_names()
+        nm = build_name_map(fn)
+        self._results = normalize_teams(self._results, nm, fn)
+
+    def add_result(
+        self,
+        match_date: date,
+        home_team: str,
+        away_team: str,
+        home_score: int,
+        away_score: int,
+        tournament: str = "FIFA World Cup",
+        neutral: bool = False,
+    ):
+        """Add a match result. Team names are normalized automatically."""
+        result = MatchResult(
+            date=match_date,
+            home_team=home_team,
+            away_team=away_team,
+            home_score=home_score,
+            away_score=away_score,
+            tournament=tournament,
+            neutral=neutral,
+        )
+        self.user_results.append(result)
+        self._invalidate_cache()
+
+    def _invalidate_cache(self):
+        """Clear cached predictions when results change."""
+        self._predict_func = None
+        self._elo_ratings = None
+        self._attack_ratings = None
+        self._defense_ratings = None
+        self._league_avg = None
+        self._cache = None
+
+    def _build_predictor(self, ref_date: pd.Timestamp) -> dict:
+        """Build prediction function with current data."""
+        # Build dataset with user results folded in
+        df = self._results.copy()
+
+        for ur in self.user_results:
+            match_date = pd.Timestamp(ur.date)
+            new_row = {
+                "date": match_date,
+                "home_team": ur.home_team,
+                "away_team": ur.away_team,
+                "home_score": ur.home_score,
+                "away_score": ur.away_score,
+                "tournament": ur.tournament,
+                "neutral": ur.neutral,
+                "city": ur.city,
+                "country": ur.country,
+            }
+            # Remove any existing row for this match
+            mask = (
+                (df["date"] == match_date) &
+                (df["home_team"] == ur.home_team) &
+                (df["away_team"] == ur.away_team)
+            )
+            if mask.any():
+                df = df[~mask]
+            df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
+
+        df = df.sort_values("date").reset_index(drop=True)
+
+        groups = identify_2026_groups(df)
+        self._groups = groups
+        self._all_teams = sorted({t for g in groups.values() for t in g})
+
+        # Compute pre-cutoff data (all data up to ref_date)
+        past = df[df["date"] <= ref_date]
+
+        elo_res = compute_elo(past)
+        self._elo_ratings = elo_res.ratings
+
+        self._attack_ratings, self._defense_ratings, self._league_avg = estimate_ratings(
+            past, ref_date=ref_date
+        )
+
+        def predict(home: str, away: str, knockout: bool) -> dict:
+            elo_diff = self._elo_ratings.get(home, INITIAL_ELO) - self._elo_ratings.get(away, INITIAL_ELO)
+            p = match_outcome_probs(
+                home, away,
+                self._attack_ratings, self._defense_ratings,
+                self._league_avg, neutral=True, elo_diff=elo_diff
+            )
+            if knockout:
+                new_pd = p["pd"] * 0.5
+                scale = (1.0 - new_pd) / max(1e-9, p["ph"] + p["pa"])
+                p["ph"] *= scale
+                p["pa"] *= scale
+                p["pd"] = new_pd
+            return p
+
+        self._predict_func = predict
+        return {"groups": groups, "teams": self._all_teams}
+
+    def predict_group_matches(self) -> pd.DataFrame:
+        """Predict all unplayed group stage matches."""
+        if not self._predict_func:
+            ref_date = pd.Timestamp(date.today()) + pd.Timedelta(days=1)
+            self._build_predictor(ref_date)
+
+        # Find played matches from user results
+        played_pairs = {(ur.home_team, ur.away_team) for ur in self.user_results}
+
+        rows = []
+        for letter, teams in self._groups.items():
+            for i, h in enumerate(teams):
+                for a in teams[i + 1:]:
+                    key = (h, a)
+                    if key in played_pairs:
+                        continue
+                    p = self._predict_func(h, a, False)
+                    idx = np.unravel_index(p["matrix"].argmax(), p["matrix"].shape)
+                    rows.append({
+                        "group": letter,
+                        "home": h,
+                        "away": a,
+                        "ph": p["ph"],
+                        "pd": p["pd"],
+                        "pa": p["pa"],
+                        "lambda_home": p["lambda_home"],
+                        "lambda_away": p["lambda_away"],
+                        "most_likely_score": f"{idx[0]}-{idx[1]}",
+                        "most_likely_prob": float(p["matrix"][idx]),
+                    })
+        return pd.DataFrame(rows)
+
+    def run_monte_carlo(self) -> tuple[dict, dict, dict]:
+        """Run Monte Carlo simulations and return probabilities."""
+        if not self._predict_func:
+            self._build_predictor(pd.Timestamp(date.today()) + pd.Timedelta(days=1))
+
+        teams = self._all_teams
+        stage_counts = {t: [0] * 7 for t in teams}
+        pos_counts = {t: {1: 0, 2: 0, 3: 0, 4: 0} for t in teams}
+        third_qual_counts = {t: 0 for t in teams}
+        champion_counts = {}
+
+        cache = precompute_pair_cache(teams, self._predict_func)
+        rng = np.random.default_rng(self.rng_seed)
+
+        for _ in range(self.n_simulations):
+            sim = simulate_tournament(self._groups, cache, rng)
+
+            # Group position tracking
+            for letter, ranked in sim["group_ranked"].items():
+                for pos, t in enumerate(ranked, 1):
+                    pos_counts[t][pos] += 1
+
+            # Third qualifiers
+            for t in sim["third_qualifiers"]:
+                third_qual_counts[t] += 1
+
+            # Stage tracking
+            r32_teams = set()
+            for r in sim["r32_results"]:
+                r32_teams.add(r["a"])
+                r32_teams.add(r["b"])
+            for t in r32_teams:
+                stage_counts[t][1] += 1
+
+            r16_teams = set()
+            for r in sim["r16_results"]:
+                r16_teams.add(r["a"])
+                r16_teams.add(r["b"])
+            for t in r16_teams:
+                stage_counts[t][2] += 1
+
+            qf_teams = set()
+            for r in sim["qf_results"]:
+                qf_teams.add(r["a"])
+                qf_teams.add(r["b"])
+            for t in qf_teams:
+                stage_counts[t][3] += 1
+
+            sf_teams = set()
+            for r in sim["sf_results"]:
+                sf_teams.add(r["a"])
+                sf_teams.add(r["b"])
+            for t in sf_teams:
+                stage_counts[t][4] += 1
+
+            if sim["final"]:
+                f = sim["final"]
+                stage_counts[f["a"]][5] += 1
+                stage_counts[f["b"]][5] += 1
+                stage_counts[f["winner"]][6] += 1
+                champion_counts[f["winner"]] = champion_counts.get(f["winner"], 0) + 1
+
+        probs = {t: [c / self.n_simulations for c in counts] for t, counts in stage_counts.items()}
+        pos_probs = {t: {p: c / self.n_simulations for p, c in pc.items()} for t, pc in pos_counts.items()}
+
+        for t in teams:
+            pos_probs[t]["3rd_qual"] = third_qual_counts[t] / self.n_simulations
+
+        return probs, pos_probs, champion_counts
+
+    def predict_tournament(self, ref_date: Optional[date] = None) -> PredictionResults:
+        """Run full prediction pipeline and return structured results."""
+        if ref_date is None:
+            ref_date = date.today()
+        self._build_predictor(pd.Timestamp(ref_date) + pd.Timedelta(days=1))
+
+        group_matches = self.predict_group_matches()
+        tournament_probs, pos_probs, champion_counts = self.run_monte_carlo()
+
+        # Build tournament probs dataframe
+        rows = []
+        for t in self._all_teams:
+            p = tournament_probs[t]
+            rows.append({
+                "team": t,
+                "elo": self._elo_ratings.get(t, INITIAL_ELO),
+                "P_R32": p[1],
+                "P_R16": p[2],
+                "P_QF": p[3],
+                "P_SF": p[4],
+                "P_Final": p[5],
+                "P_Win": p[6],
+            })
+        tournament_df = pd.DataFrame(rows).sort_values("P_Win", ascending=False)
+
+        # Build position probs dataframe
+        pos_rows = []
+        for t in self._all_teams:
+            for pos in [1, 2, 3, 4]:
+                pos_rows.append({"team": t, "position": pos, "probability": pos_probs[t].get(pos, 0)})
+            pos_rows.append({"team": t, "position": "3rd_qual", "probability": pos_probs[t].get("3rd_qual", 0)})
+        pos_df = pd.DataFrame(pos_rows)
+
+        champion_probs = {t: p[6] for t, p in tournament_probs.items()}
+
+        return PredictionResults(
+            group_match_predictions=group_matches,
+            tournament_probs=tournament_df,
+            group_position_probs=pos_df,
+            elo_ratings=self._elo_ratings,
+            attack_ratings=self._attack_ratings,
+            defense_ratings=self._defense_ratings,
+            league_avg_goals=self._league_avg,
+            champion_probs=champion_probs,
+        )
+
+    def save_outputs(self, ref_date: Optional[date] = None):
+        """Save all prediction outputs to CSV/JSON files."""
+        results = self.predict_tournament(ref_date)
+
+        # Group match predictions
+        results.group_match_predictions.to_csv(
+            OUT_DIR / "group_match_predictions.csv", index=False
+        )
+
+        # Tournament probabilities
+        results.tournament_probs.to_csv(
+            OUT_DIR / "tournament_probabilities.csv", index=False
+        )
+
+        # Position probabilities
+        results.group_position_probs.to_csv(
+            OUT_DIR / "group_position_probabilities.csv", index=False
+        )
+
+        # ELO snapshot
+        elo_df = pd.DataFrame(
+            sorted([(t, e) for t, e in self._elo_ratings.items() if t in self._all_teams], key=lambda x: -x[1]),
+            columns=["team", "elo"]
+        )
+        elo_df.to_csv(OUT_DIR / "elo_snapshot_2026.csv", index=False)
+
+        # Attack/defense ratings
+        ad_df = pd.DataFrame([
+            {"team": t, "attack": self._attack_ratings.get(t, 1.0), "defense": self._defense_ratings.get(t, 1.0)}
+            for t in self._all_teams
+        ]).sort_values("attack", ascending=False)
+        ad_df.to_csv(OUT_DIR / "attack_defense_ratings.csv", index=False)
+
+        # Summary JSON
+        summary = {
+            "cutoff": str(ref_date or date.today()),
+            "n_simulations": self.n_simulations,
+            "league_avg_goals": self._league_avg,
+            "top10_champions": [
+                {"team": t, "p_win": p}
+                for t, p in sorted(self._champion_probs.items() if hasattr(self, '_champion_probs')
+                else results.champion_probs.items(), key=lambda x: -x[1])[:10]
+            ],
+            "groups": {letter: teams for letter, teams in self._groups.items()},
+        }
+        with open(OUT_DIR / "summary.json", "w") as f:
+            json.dump(summary, f, indent=2, default=str)
+
+    def load_actuals(self, csv_path: Path) -> int:
+        """Load actual results from a CSV file.
+
+        CSV columns: date, home_team, away_team, home_score, away_score
+        Returns number of results loaded.
+        """
+        df = pd.read_csv(csv_path, parse_dates=["date"])
+        for _, row in df.iterrows():
+            self.add_result(
+                match_date=row["date"].date(),
+                home_team=row["home_team"],
+                away_team=row["away_team"],
+                home_score=int(row["home_score"]),
+                away_score=int(row["away_score"]),
+                tournament=row.get("tournament", "FIFA World Cup"),
+                neutral=row.get("neutral", False),
+            )
+        return len(df)
+
+    def _champion_probs(self):
+        _, _, champions = self.run_monte_carlo()
+        return champions
+
+
+if __name__ == "__main__":
+    predictor = WorldCupPredictor()
+    results = predictor.predict_tournament()
+    print("Top 10 championship probabilities:")
+    for _, row in results.tournament_probs.head(10).iterrows():
+        print(f"  {row['P_Win']*100:5.2f}%  {row['team']}")
