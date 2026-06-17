@@ -1,0 +1,128 @@
+{
+  "cutoff": "2026-06-16",
+  "n_simulations": 20000,
+  "league_avg_goals": 1.3759880518291876,
+  "actuals_folded": 16,
+  "backtest_md1_2": {
+    "outcome_accuracy": 0.375,
+    "top_score_accuracy": 0.0625,
+    "brier": 0.7137198048434232,
+    "log_loss": 1.1430917491029764
+  },
+  "top10_champions": [
+    {
+      "team": "Morocco",
+      "p_win": 0.1828
+    },
+    {
+      "team": "Argentina",
+      "p_win": 0.131
+    },
+    {
+      "team": "England",
+      "p_win": 0.0944
+    },
+    {
+      "team": "Japan",
+      "p_win": 0.07685
+    },
+    {
+      "team": "Spain",
+      "p_win": 0.05795
+    },
+    {
+      "team": "Algeria",
+      "p_win": 0.0512
+    },
+    {
+      "team": "Portugal",
+      "p_win": 0.04955
+    },
+    {
+      "team": "Senegal",
+      "p_win": 0.0434
+    },
+    {
+      "team": "Ivory Coast",
+      "p_win": 0.03075
+    },
+    {
+      "team": "Belgium",
+      "p_win": 0.02985
+    }
+  ],
+  "groups": {
+    "A": [
+      "Mexico",
+      "South Africa",
+      "South Korea",
+      "Czech Republic"
+    ],
+    "B": [
+      "Canada",
+      "Bosnia and Herzegovina",
+      "Qatar",
+      "Switzerland"
+    ],
+    "C": [
+      "Brazil",
+      "Morocco",
+      "Haiti",
+      "Scotland"
+    ],
+    "D": [
+      "United States",
+      "Paraguay",
+      "Australia",
+      "Turkey"
+    ],
+    "E": [
+      "Germany",
+      "Cura\u00e7ao",
+      "Ivory Coast",
+      "Ecuador"
+    ],
+    "F": [
+      "Netherlands",
+      "Japan",
+      "Sweden",
+      "Tunisia"
+    ],
+    "G": [
+      "Belgium",
+      "Egypt",
+      "Iran",
+      "New Zealand"
+    ],
+    "H": [
+      "Spain",
+      "Cape Verde",
+      "Saudi Arabia",
+      "Uruguay"
+    ],
+    "I": [
+      "France",
+      "Senegal",
+      "Iraq",
+      "Norway"
+    ],
+    "J": [
+      "Argentina",
+      "Algeria",
+      "Austria",
+      "Jordan"
+    ],
+    "K": [
+      "Portugal",
+      "DR Congo",
+      "Uzbekistan",
+      "Colombia"
+    ],
+    "L": [
+      "England",
+      "Croatia",
+      "Ghana",
+      "Panama"
+    ]
+  }
+}

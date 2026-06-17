@@ -1,0 +1,454 @@
+{
+  "groups": {
+    "A": [
+      "Mexico",
+      "South Africa",
+      "South Korea",
+      "Czech Republic"
+    ],
+    "B": [
+      "Canada",
+      "Bosnia and Herzegovina",
+      "Qatar",
+      "Switzerland"
+    ],
+    "C": [
+      "Brazil",
+      "Morocco",
+      "Haiti",
+      "Scotland"
+    ],
+    "D": [
+      "United States",
+      "Paraguay",
+      "Australia",
+      "Turkey"
+    ],
+    "E": [
+      "Germany",
+      "Cura\u00e7ao",
+      "Ivory Coast",
+      "Ecuador"
+    ],
+    "F": [
+      "Netherlands",
+      "Japan",
+      "Sweden",
+      "Tunisia"
+    ],
+    "G": [
+      "Belgium",
+      "Egypt",
+      "Iran",
+      "New Zealand"
+    ],
+    "H": [
+      "Spain",
+      "Cape Verde",
+      "Saudi Arabia",
+      "Uruguay"
+    ],
+    "I": [
+      "France",
+      "Senegal",
+      "Iraq",
+      "Norway"
+    ],
+    "J": [
+      "Argentina",
+      "Algeria",
+      "Austria",
+      "Jordan"
+    ],
+    "K": [
+      "Portugal",
+      "DR Congo",
+      "Uzbekistan",
+      "Colombia"
+    ],
+    "L": [
+      "England",
+      "Croatia",
+      "Ghana",
+      "Panama"
+    ]
+  },
+  "most_likely_group_standings": {
+    "A": [
+      "Mexico",
+      "South Korea",
+      "Czech Republic",
+      "South Africa"
+    ],
+    "B": [
+      "Canada",
+      "Switzerland",
+      "Qatar",
+      "Bosnia and Herzegovina"
+    ],
+    "C": [
+      "Morocco",
+      "Brazil",
+      "Scotland",
+      "Haiti"
+    ],
+    "D": [
+      "Australia",
+      "United States",
+      "Turkey",
+      "Paraguay"
+    ],
+    "E": [
+      "Ivory Coast",
+      "Germany",
+      "Ecuador",
+      "Cura\u00e7ao"
+    ],
+    "F": [
+      "Netherlands",
+      "Japan",
+      "Sweden",
+      "Tunisia"
+    ],
+    "G": [
+      "Belgium",
+      "Iran",
+      "Egypt",
+      "New Zealand"
+    ],
+    "H": [
+      "Spain",
+      "Uruguay",
+      "Cape Verde",
+      "Saudi Arabia"
+    ],
+    "I": [
+      "Norway",
+      "France",
+      "Senegal",
+      "Iraq"
+    ],
+    "J": [
+      "Argentina",
+      "Algeria",
+      "Austria",
+      "Jordan"
+    ],
+    "K": [
+      "Portugal",
+      "Uzbekistan",
+      "DR Congo",
+      "Colombia"
+    ],
+    "L": [
+      "England",
+      "Croatia",
+      "Ghana",
+      "Panama"
+    ]
+  },
+  "best_8_thirds": [
+    [
+      "J",
+      "Austria",
+      5,
+      1,
+      4
+    ],
+    [
+      "B",
+      "Qatar",
+      4,
+      0,
+      4
+    ],
+    [
+      "D",
+      "Turkey",
+      4,
+      -1,
+      4
+    ],
+    [
+      "F",
+      "Sweden",
+      3,
+      2,
+      7
+    ],
+    [
+      "G",
+      "Egypt",
+      3,
+      0,
+      3
+    ],
+    [
+      "I",
+      "Senegal",
+      3,
+      0,
+      3
+    ],
+    [
+      "H",
+      "Cape Verde",
+      3,
+      0,
+      2
+    ],
+    [
+      "C",
+      "Scotland",
+      3,
+      -2,
+      2
+    ]
+  ],
+  "R32": [
+    {
+      "match_num": 73,
+      "slot_a": "2A",
+      "slot_b": "2B",
+      "team_a": "South Korea",
+      "team_b": "Switzerland",
+      "winner": "South Korea",
+      "date": "28 Jun"
+    },
+    {
+      "match_num": 74,
+      "slot_a": "1F",
+      "slot_b": "2C",
+      "team_a": "Netherlands",
+      "team_b": "Brazil",
+      "winner": "Netherlands",
+      "date": "28 Jun"
+    },
+    {
+      "match_num": 75,
+      "slot_a": "1E",
+      "slot_b": "3",
+      "team_a": "Ivory Coast",
+      "team_b": "Qatar",
+      "winner": "Ivory Coast",
+      "date": "29 Jun"
+    },
+    {
+      "match_num": 76,
+      "slot_a": "1A",
+      "slot_b": "3",
+      "team_a": "Mexico",
+      "team_b": "Scotland",
+      "winner": "Mexico",
+      "date": "29 Jun"
+    },
+    {
+      "match_num": 77,
+      "slot_a": "1C",
+      "slot_b": "2F",
+      "team_a": "Morocco",
+      "team_b": "Japan",
+      "winner": "Morocco",
+      "date": "29 Jun"
+    },
+    {
+      "match_num": 78,
+      "slot_a": "2E",
+      "slot_b": "2I",
+      "team_a": "Germany",
+      "team_b": "France",
+      "winner": "France",
+      "date": "30 Jun"
+    },
+    {
+      "match_num": 79,
+      "slot_a": "1G",
+      "slot_b": "3",
+      "team_a": "Belgium",
+      "team_b": "Cape Verde",
+      "winner": "Belgium",
+      "date": "30 Jun"
+    },
+    {
+      "match_num": 80,
+      "slot_a": "1L",
+      "slot_b": "3",
+      "team_a": "England",
+      "team_b": "Austria",
+      "winner": "England",
+      "date": "30 Jun"
+    },
+    {
+      "match_num": 81,
+      "slot_a": "1I",
+      "slot_b": "3",
+      "team_a": "Norway",
+      "team_b": "Egypt",
+      "winner": "Norway",
+      "date": "1 Jul"
+    },
+    {
+      "match_num": 82,
+      "slot_a": "1B",
+      "slot_b": "3",
+      "team_a": "Canada",
+      "team_b": "Sweden",
+      "winner": "Canada",
+      "date": "1 Jul"
+    },
+    {
+      "match_num": 83,
+      "slot_a": "1D",
+      "slot_b": "3",
+      "team_a": "Australia",
+      "team_b": "Senegal",
+      "winner": "Senegal",
+      "date": "1 Jul"
+    },
+    {
+      "match_num": 84,
+      "slot_a": "2D",
+      "slot_b": "2G",
+      "team_a": "United States",
+      "team_b": "Iran",
+      "winner": "Iran",
+      "date": "2 Jul"
+    },
+    {
+      "match_num": 85,
+      "slot_a": "1H",
+      "slot_b": "2J",
+      "team_a": "Spain",
+      "team_b": "Algeria",
+      "winner": "Spain",
+      "date": "2 Jul"
+    },
+    {
+      "match_num": 86,
+      "slot_a": "1K",
+      "slot_b": "3",
+      "team_a": "Portugal",
+      "team_b": "Turkey",
+      "winner": "Portugal",
+      "date": "2 Jul"
+    },
+    {
+      "match_num": 87,
+      "slot_a": "1J",
+      "slot_b": "2H",
+      "team_a": "Argentina",
+      "team_b": "Uruguay",
+      "winner": "Argentina",
+      "date": "3 Jul"
+    },
+    {
+      "match_num": 88,
+      "slot_a": "2K",
+      "slot_b": "2L",
+      "team_a": "Uzbekistan",
+      "team_b": "Croatia",
+      "winner": "Uzbekistan",
+      "date": "3 Jul"
+    }
+  ],
+  "R16": [
+    {
+      "r16_idx": 1,
+      "team_a": "South Korea",
+      "team_b": "Netherlands",
+      "winner": "Netherlands"
+    },
+    {
+      "r16_idx": 2,
+      "team_a": "Ivory Coast",
+      "team_b": "Morocco",
+      "winner": "Morocco"
+    },
+    {
+      "r16_idx": 3,
+      "team_a": "Mexico",
+      "team_b": "France",
+      "winner": "France"
+    },
+    {
+      "r16_idx": 4,
+      "team_a": "Belgium",
+      "team_b": "Norway",
+      "winner": "Belgium"
+    },
+    {
+      "r16_idx": 5,
+      "team_a": "England",
+      "team_b": "Canada",
+      "winner": "England"
+    },
+    {
+      "r16_idx": 6,
+      "team_a": "Senegal",
+      "team_b": "Spain",
+      "winner": "Spain"
+    },
+    {
+      "r16_idx": 7,
+      "team_a": "Iran",
+      "team_b": "Portugal",
+      "winner": "Portugal"
+    },
+    {
+      "r16_idx": 8,
+      "team_a": "Argentina",
+      "team_b": "Uzbekistan",
+      "winner": "Argentina"
+    }
+  ],
+  "QF": [
+    {
+      "qf_idx": 1,
+      "team_a": "Netherlands",
+      "team_b": "Morocco",
+      "winner": "Morocco"
+    },
+    {
+      "qf_idx": 2,
+      "team_a": "France",
+      "team_b": "Belgium",
+      "winner": "Belgium"
+    },
+    {
+      "qf_idx": 3,
+      "team_a": "England",
+      "team_b": "Spain",
+      "winner": "England"
+    },
+    {
+      "qf_idx": 4,
+      "team_a": "Portugal",
+      "team_b": "Argentina",
+      "winner": "Argentina"
+    }
+  ],
+  "SF": [
+    {
+      "sf_idx": 1,
+      "team_a": "Morocco",
+      "team_b": "Belgium",
+      "winner": "Morocco"
+    },
+    {
+      "sf_idx": 2,
+      "team_a": "England",
+      "team_b": "Argentina",
+      "winner": "Argentina"
+    }
+  ],
+  "final": {
+    "team_a": "Morocco",
+    "team_b": "Argentina",
+    "winner": "Morocco"
+  },
+  "third_place": {
+    "team_a": "Belgium",
+    "team_b": "England",
+    "winner": "England"
+  }
+}

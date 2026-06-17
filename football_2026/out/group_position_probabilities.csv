@@ -1,0 +1,241 @@
+team,position,probability
+Algeria,1,0.30835
+Algeria,2,0.33915
+Algeria,3,0.23705
+Algeria,4,0.11545
+Algeria,3rd_qual,0.17365
+Argentina,1,0.4865
+Argentina,2,0.3012
+Argentina,3,0.1557
+Argentina,4,0.0566
+Argentina,3rd_qual,0.12185
+Australia,1,0.4742
+Australia,2,0.28965
+Australia,3,0.1646
+Australia,4,0.07155
+Australia,3rd_qual,0.1265
+Austria,1,0.15665
+Austria,2,0.24625
+Austria,3,0.34955
+Austria,4,0.24755
+Austria,3rd_qual,0.2315
+Belgium,1,0.35365
+Belgium,2,0.27485
+Belgium,3,0.21515
+Belgium,4,0.15635
+Belgium,3rd_qual,0.1592
+Bosnia and Herzegovina,1,0.08145
+Bosnia and Herzegovina,2,0.16665
+Bosnia and Herzegovina,3,0.28785
+Bosnia and Herzegovina,4,0.46405
+Bosnia and Herzegovina,3rd_qual,0.1733
+Brazil,1,0.21045
+Brazil,2,0.35525
+Brazil,3,0.27895
+Brazil,4,0.15535
+Brazil,3rd_qual,0.19245
+Canada,1,0.4184
+Canada,2,0.30805
+Canada,3,0.1826
+Canada,4,0.09095
+Canada,3rd_qual,0.1389
+Cape Verde,1,0.0991
+Cape Verde,2,0.243
+Cape Verde,3,0.31685
+Cape Verde,4,0.34105
+Cape Verde,3rd_qual,0.1763
+Colombia,1,0.22245
+Colombia,2,0.29225
+Colombia,3,0.28495
+Colombia,4,0.20035
+Colombia,3rd_qual,0.1926
+Croatia,1,0.1974
+Croatia,2,0.3729
+Croatia,3,0.27005
+Croatia,4,0.15965
+Croatia,3rd_qual,0.176
+Curaçao,1,0.0765
+Curaçao,2,0.15115
+Curaçao,3,0.2721
+Curaçao,4,0.50025
+Curaçao,3rd_qual,0.15745
+Czech Republic,1,0.1779
+Czech Republic,2,0.219
+Czech Republic,3,0.2674
+Czech Republic,4,0.3357
+Czech Republic,3rd_qual,0.1856
+DR Congo,1,0.0593
+DR Congo,2,0.1412
+DR Congo,3,0.26885
+DR Congo,4,0.53065
+DR Congo,3rd_qual,0.14915
+Ecuador,1,0.1215
+Ecuador,2,0.22445
+Ecuador,3,0.351
+Ecuador,4,0.30305
+Ecuador,3rd_qual,0.22675
+Egypt,1,0.2039
+Egypt,2,0.2588
+Egypt,3,0.2853
+Egypt,4,0.252
+Egypt,3rd_qual,0.1981
+England,1,0.65675
+England,2,0.22645
+England,3,0.08725
+England,4,0.02955
+England,3rd_qual,0.0698
+France,1,0.2664
+France,2,0.2756
+France,3,0.26215
+France,4,0.19585
+France,3rd_qual,0.1793
+Germany,1,0.4008
+Germany,2,0.30655
+Germany,3,0.1897
+Germany,4,0.10295
+Germany,3rd_qual,0.1441
+Ghana,1,0.0657
+Ghana,2,0.1835
+Ghana,3,0.31685
+Ghana,4,0.43395
+Ghana,3rd_qual,0.1775
+Haiti,1,0.11745
+Haiti,2,0.25825
+Haiti,3,0.34335
+Haiti,4,0.28095
+Haiti,3rd_qual,0.2226
+Iran,1,0.32215
+Iran,2,0.28585
+Iran,3,0.23005
+Iran,4,0.16195
+Iran,3rd_qual,0.1692
+Iraq,1,0.0792
+Iraq,2,0.15205
+Iraq,3,0.26685
+Iraq,4,0.5019
+Iraq,3rd_qual,0.16305
+Ivory Coast,1,0.4012
+Ivory Coast,2,0.31785
+Ivory Coast,3,0.1872
+Ivory Coast,4,0.09375
+Ivory Coast,3rd_qual,0.14075
+Japan,1,0.5568
+Japan,2,0.2689
+Japan,3,0.12395
+Japan,4,0.05035
+Japan,3rd_qual,0.10155
+Jordan,1,0.0485
+Jordan,2,0.1134
+Jordan,3,0.2577
+Jordan,4,0.5804
+Jordan,3rd_qual,0.14615
+Mexico,1,0.27575
+Mexico,2,0.2707
+Mexico,3,0.2486
+Mexico,4,0.20495
+Mexico,3rd_qual,0.17485
+Morocco,1,0.6241
+Morocco,2,0.2478
+Morocco,3,0.0986
+Morocco,4,0.0295
+Morocco,3rd_qual,0.08185
+Netherlands,1,0.282
+Netherlands,2,0.35595
+Netherlands,3,0.22945
+Netherlands,4,0.1326
+Netherlands,3rd_qual,0.1618
+New Zealand,1,0.1203
+New Zealand,2,0.1805
+New Zealand,3,0.2695
+New Zealand,4,0.4297
+New Zealand,3rd_qual,0.17805
+Norway,1,0.30975
+Norway,2,0.2706
+Norway,3,0.24675
+Norway,4,0.1729
+Norway,3rd_qual,0.1797
+Panama,1,0.08015
+Panama,2,0.21715
+Panama,3,0.32585
+Panama,4,0.37685
+Panama,3rd_qual,0.19485
+Paraguay,1,0.04915
+Paraguay,2,0.1278
+Paraguay,3,0.2584
+Paraguay,4,0.56465
+Paraguay,3rd_qual,0.1504
+Portugal,1,0.49695
+Portugal,2,0.2691
+Portugal,3,0.1583
+Portugal,4,0.07565
+Portugal,3rd_qual,0.1218
+Qatar,1,0.13125
+Qatar,2,0.21075
+Qatar,3,0.327
+Qatar,4,0.331
+Qatar,3rd_qual,0.21585
+Saudi Arabia,1,0.0879
+Saudi Arabia,2,0.22335
+Saudi Arabia,3,0.29905
+Saudi Arabia,4,0.3897
+Saudi Arabia,3rd_qual,0.17175
+Scotland,1,0.048
+Scotland,2,0.1387
+Scotland,3,0.2791
+Scotland,4,0.5342
+Scotland,3rd_qual,0.1606
+Senegal,1,0.34465
+Senegal,2,0.30175
+Senegal,3,0.22425
+Senegal,4,0.12935
+Senegal,3rd_qual,0.1635
+South Africa,1,0.1869
+South Africa,2,0.2423
+South Africa,3,0.2738
+South Africa,4,0.297
+South Africa,3rd_qual,0.1902
+South Korea,1,0.35945
+South Korea,2,0.268
+South Korea,3,0.2102
+South Korea,4,0.16235
+South Korea,3rd_qual,0.1597
+Spain,1,0.64825
+Spain,2,0.2172
+Spain,3,0.0921
+Spain,4,0.04245
+Spain,3rd_qual,0.07175
+Sweden,1,0.07
+Sweden,2,0.16535
+Sweden,3,0.3025
+Sweden,4,0.46215
+Sweden,3rd_qual,0.1777
+Switzerland,1,0.3689
+Switzerland,2,0.31455
+Switzerland,3,0.20255
+Switzerland,4,0.114
+Switzerland,3rd_qual,0.15775
+Tunisia,1,0.0912
+Tunisia,2,0.2098
+Tunisia,3,0.3441
+Tunisia,4,0.3549
+Tunisia,3rd_qual,0.2157
+Turkey,1,0.1961
+Turkey,2,0.27665
+Turkey,3,0.31155
+Turkey,4,0.2157
+Turkey,3rd_qual,0.21385
+United States,1,0.28055
+United States,2,0.3059
+United States,3,0.26545
+United States,4,0.1481
+United States,3rd_qual,0.18765
+Uruguay,1,0.16475
+Uruguay,2,0.31645
+Uruguay,3,0.292
+Uruguay,4,0.2268
+Uruguay,3rd_qual,0.1836
+Uzbekistan,1,0.2213
+Uzbekistan,2,0.29745
+Uzbekistan,3,0.2879
+Uzbekistan,4,0.19335
+Uzbekistan,3rd_qual,0.1938

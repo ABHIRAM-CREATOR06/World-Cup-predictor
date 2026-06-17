@@ -1,0 +1,76 @@
+{
+  "groups": {
+    "A": [
+      "MEXICO",
+      "SOUTH AFRICA",
+      "KOREA REPUBLIC",
+      "CZECHIA"
+    ],
+    "C": [
+      "BRAZIL",
+      "MOROCCO",
+      "HAITI",
+      "SCOTLAND"
+    ],
+    "D": [
+      "USA",
+      "PARAGUAY",
+      "AUSTRALIA",
+      "T\u00dcRKIYE"
+    ],
+    "E": [
+      "GERMANY",
+      "CURA\u00c7AO",
+      "C\u00d4TE D\u2019IVOIRE",
+      "ECUADOR"
+    ],
+    "F": [
+      "NETHERLANDS",
+      "JAPAN",
+      "SWEDEN",
+      "TUNISIA"
+    ],
+    "G": [
+      "BELGIUM",
+      "EGYPT",
+      "IR IRAN",
+      "NEW ZEALAND"
+    ],
+    "I": [
+      "FRANCE",
+      "SENEGAL",
+      "IRAQ",
+      "NORWAY"
+    ],
+    "J": [
+      "ARGENTINA",
+      "ALGERIA",
+      "AUSTRIA",
+      "JORDAN"
+    ],
+    "K": [
+      "PORTUGAL",
+      "CONGO DR",
+      "UZBEKISTAN",
+      "COLOMBIA"
+    ],
+    "L": [
+      "ENGLAND",
+      "CROATIA",
+      "GHANA",
+      "PANAMA"
+    ],
+    "B": [
+      "CANADA",
+      "BOSNIA & HERZEGOVINA",
+      "QATAR",
+      "SWITZERLAND"
+    ],
+    "H": [
+      "SPAIN",
+      "CABO VERDE",
+      "SAUDI ARABIA",
+      "URUGUAY"
+    ]
+  }
+}

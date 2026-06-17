@@ -1,0 +1,44 @@
+{
+  "summary": [
+    {
+      "tournament": "2022 World Cup",
+      "n_matches": 64,
+      "brier": 0.6467754803602513,
+      "log_loss": 1.075373813561399,
+      "rps": 0.23048350410312304,
+      "outcome_accuracy": 0.453125
+    },
+    {
+      "tournament": "Euro 2024",
+      "n_matches": 51,
+      "brier": 0.6089488051465448,
+      "log_loss": 1.0171912058008135,
+      "rps": 0.1921057438229532,
+      "outcome_accuracy": 0.5098039215686274
+    },
+    {
+      "tournament": "Copa America 2024",
+      "n_matches": 32,
+      "brier": 0.553431281735461,
+      "log_loss": 0.931376435619403,
+      "rps": 0.17780184384815823,
+      "outcome_accuracy": 0.5625
+    },
+    {
+      "tournament": "2018 World Cup",
+      "n_matches": 128,
+      "brier": 0.6074362754598928,
+      "log_loss": 1.0168083495744988,
+      "rps": 0.2177257805576764,
+      "outcome_accuracy": 0.5078125
+    },
+    {
+      "tournament": "Euro 2020",
+      "n_matches": 102,
+      "brier": 0.5753812279562686,
+      "log_loss": 0.9687615034772945,
+      "rps": 0.1880641602893768,
+      "outcome_accuracy": 0.5196078431372549
+    }
+  ]
+}

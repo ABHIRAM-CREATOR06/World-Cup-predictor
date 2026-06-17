@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2026 World Cup Prediction</title>
+<style>
+body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 30px; }
+.container { max-width: 1700px; margin: 0 auto; }
+h1 { text-align: center; color: #e6edf3; margin-bottom: 5px; }
+.subtitle { text-align: center; color: #8b949e; margin-bottom: 30px; }
+ul li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>2026 FIFA World Cup — Predictive Model</h1>
+<p class="subtitle">ELO + Poisson · Monte Carlo 20,000 sims · Official FIFA bracket (PDF v17)</p>
+
+<div style="background:#161b22;padding:20px;border-radius:8px;margin-top:30px;">
+<h2 style="color:#e6edf3;margin-top:0;">Group Stage (12 groups, 48 teams — top 2 + 8 best 3rd advance)</h2>
+<p style="color:#8b949e;font-size:13px;">Group letters and team composition per the official FIFA draw.</p>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group A</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Mexico</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: South Korea</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">3rd: Czech Republic</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: South Africa</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group B</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Canada</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Switzerland</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Qatar</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Bosnia and Herzegovina</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group C</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Morocco</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Brazil</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Scotland</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Haiti</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group D</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Australia</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: United States</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Turkey</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Paraguay</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group E</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Ivory Coast</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Germany</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">3rd: Ecuador</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Curaçao</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group F</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Netherlands</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Japan</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Sweden</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Tunisia</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group G</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Belgium</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Iran</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Egypt</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: New Zealand</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group H</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Spain</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Uruguay</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Cape Verde</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Saudi Arabia</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group I</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Norway</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: France</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Senegal</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Iraq</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group J</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Argentina</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Algeria</div>
+<div style="background:#2ea043;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">3rd: Austria</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Jordan</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group K</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: Portugal</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Uzbekistan</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">3rd: DR Congo</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Colombia</div>
+</div>
+<div style="background:#0d1117;padding:10px;border-radius:6px;border:1px solid #30363d;">
+<div style="color:#58a6ff;font-weight:bold;margin-bottom:5px;">Group L</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">1st: England</div>
+<div style="background:#1f6feb;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:1;color:#fff;font-size:12px;font-weight:600;">2nd: Croatia</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">3rd: Ghana</div>
+<div style="background:#6e7681;padding:5px 8px;margin:2px 0;border-radius:4px;opacity:0.5;color:#fff;font-size:12px;font-weight:400;">4th: Panama</div>
+</div>
+</div></div>
+
+<div style="background:#161b22;padding:20px;border-radius:8px;margin-top:30px;">
+<h2 style="color:#e6edf3;margin-top:0;">Round of 32 (28 June – 3 July 2026) — Official FIFA Bracket</h2>
+<table style="width:100%;border-collapse:collapse;color:#e6edf3;font-size:13px;">
+<tr style="border-bottom:1px solid #30363d;"><th style="text-align:left;padding:6px;">Match</th><th style="text-align:left;padding:6px;">Date</th><th style="text-align:left;padding:6px;">Home</th><th style="text-align:left;padding:6px;">Away</th><th style="text-align:left;padding:6px;">Winner</th></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M73</td><td style="padding:5px 6px;">28 Jun</td><td style="padding:5px 6px;">South Korea (2A)</td><td style="padding:5px 6px;">Switzerland (2B)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">South Korea</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M74</td><td style="padding:5px 6px;">28 Jun</td><td style="padding:5px 6px;">Netherlands (1F)</td><td style="padding:5px 6px;">Brazil (2C)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Netherlands</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M75</td><td style="padding:5px 6px;">29 Jun</td><td style="padding:5px 6px;">Ivory Coast (1E)</td><td style="padding:5px 6px;">Qatar (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Ivory Coast</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M76</td><td style="padding:5px 6px;">29 Jun</td><td style="padding:5px 6px;">Mexico (1A)</td><td style="padding:5px 6px;">Scotland (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Mexico</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M77</td><td style="padding:5px 6px;">29 Jun</td><td style="padding:5px 6px;">Morocco (1C)</td><td style="padding:5px 6px;">Japan (2F)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Morocco</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M78</td><td style="padding:5px 6px;">30 Jun</td><td style="padding:5px 6px;">Germany (2E)</td><td style="padding:5px 6px;">France (2I)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">France</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M79</td><td style="padding:5px 6px;">30 Jun</td><td style="padding:5px 6px;">Belgium (1G)</td><td style="padding:5px 6px;">Cape Verde (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Belgium</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M80</td><td style="padding:5px 6px;">30 Jun</td><td style="padding:5px 6px;">England (1L)</td><td style="padding:5px 6px;">Austria (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">England</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M81</td><td style="padding:5px 6px;">1 Jul</td><td style="padding:5px 6px;">Norway (1I)</td><td style="padding:5px 6px;">Egypt (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Norway</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M82</td><td style="padding:5px 6px;">1 Jul</td><td style="padding:5px 6px;">Canada (1B)</td><td style="padding:5px 6px;">Sweden (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Canada</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M83</td><td style="padding:5px 6px;">1 Jul</td><td style="padding:5px 6px;">Australia (1D)</td><td style="padding:5px 6px;">Senegal (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Senegal</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M84</td><td style="padding:5px 6px;">2 Jul</td><td style="padding:5px 6px;">United States (2D)</td><td style="padding:5px 6px;">Iran (2G)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Iran</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M85</td><td style="padding:5px 6px;">2 Jul</td><td style="padding:5px 6px;">Spain (1H)</td><td style="padding:5px 6px;">Algeria (2J)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Spain</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M86</td><td style="padding:5px 6px;">2 Jul</td><td style="padding:5px 6px;">Portugal (1K)</td><td style="padding:5px 6px;">Turkey (3)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Portugal</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M87</td><td style="padding:5px 6px;">3 Jul</td><td style="padding:5px 6px;">Argentina (1J)</td><td style="padding:5px 6px;">Uruguay (2H)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Argentina</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:5px 6px;">M88</td><td style="padding:5px 6px;">3 Jul</td><td style="padding:5px 6px;">Uzbekistan (2K)</td><td style="padding:5px 6px;">Croatia (2L)</td><td style="padding:5px 6px;color:#3fb950;font-weight:600;">Uzbekistan</td></tr>
+</table></div>
+
+<div style="background:#161b22;padding:20px;border-radius:8px;margin-top:30px;">
+<h2 style="color:#e6edf3;margin-top:0;">Knockout Bracket (Most Likely Path)</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+<div><h3 style="color:#58a6ff;">Round of 16 (4-7 Jul)</h3><ul style="color:#e6edf3;"><li>R16-1: South Korea vs Netherlands → <b style="color:#3fb950;">Netherlands</b></li><li>R16-2: Ivory Coast vs Morocco → <b style="color:#3fb950;">Morocco</b></li><li>R16-3: Mexico vs France → <b style="color:#3fb950;">France</b></li><li>R16-4: Belgium vs Norway → <b style="color:#3fb950;">Belgium</b></li><li>R16-5: England vs Canada → <b style="color:#3fb950;">England</b></li><li>R16-6: Senegal vs Spain → <b style="color:#3fb950;">Spain</b></li><li>R16-7: Iran vs Portugal → <b style="color:#3fb950;">Portugal</b></li><li>R16-8: Argentina vs Uzbekistan → <b style="color:#3fb950;">Argentina</b></li></ul></div>
+<div><h3 style="color:#58a6ff;">Quarterfinals (9-11 Jul)</h3><ul style="color:#e6edf3;"><li>QF-1: Netherlands vs Morocco → <b style="color:#3fb950;">Morocco</b></li><li>QF-2: France vs Belgium → <b style="color:#3fb950;">Belgium</b></li><li>QF-3: England vs Spain → <b style="color:#3fb950;">England</b></li><li>QF-4: Portugal vs Argentina → <b style="color:#3fb950;">Argentina</b></li></ul></div>
+<div><h3 style="color:#58a6ff;">Semifinals (14-15 Jul)</h3><ul style="color:#e6edf3;"><li>SF-1: Morocco vs Belgium → <b style="color:#3fb950;">Morocco</b></li><li>SF-2: England vs Argentina → <b style="color:#3fb950;">Argentina</b></li></ul></div>
+<div><h3 style="color:#58a6ff;">3rd Place (18 Jul)</h3><ul style="color:#e6edf3;"><li>Belgium vs England → <b style="color:#3fb950;">England</b></li></ul></div>
+</div><div style="text-align:center;margin-top:20px;padding:20px;background:#0d1117;border:2px solid #3fb950;border-radius:8px;"><div style="color:#3fb950;font-size:24px;font-weight:bold;">🏆 Morocco</div><div style="color:#8b949e;font-size:14px;margin-top:5px;">Final, 19 July 2026, Philadelphia — Morocco vs Argentina</div></div>
+</div>
+
+<div style="background:#161b22;padding:20px;border-radius:8px;margin-top:30px;">
+<h2 style="color:#e6edf3;margin-top:0;">Top 10 Championship Probabilities (Monte Carlo, 20,000 sims)</h2>
+<table style="width:100%;border-collapse:collapse;color:#e6edf3;">
+<tr style="border-bottom:1px solid #30363d;"><th style="text-align:left;padding:8px;">Rank</th><th style="text-align:left;padding:8px;">Team</th><th style="text-align:right;padding:8px;">P(Win)</th><th style="text-align:right;padding:8px;">P(Final)</th><th style="text-align:right;padding:8px;">P(SF)</th><th style="text-align:right;padding:8px;">P(R32)</th></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">1</td><td style="padding:6px 8px;font-weight:600;">Morocco</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">18.3%</td><td style="padding:6px 8px;text-align:right;">28.3%</td><td style="padding:6px 8px;text-align:right;">39.5%</td><td style="padding:6px 8px;text-align:right;">95.4%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">2</td><td style="padding:6px 8px;font-weight:600;">Argentina</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">13.1%</td><td style="padding:6px 8px;text-align:right;">21.0%</td><td style="padding:6px 8px;text-align:right;">32.5%</td><td style="padding:6px 8px;text-align:right;">91.0%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">3</td><td style="padding:6px 8px;font-weight:600;">England</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">9.4%</td><td style="padding:6px 8px;text-align:right;">16.8%</td><td style="padding:6px 8px;text-align:right;">27.9%</td><td style="padding:6px 8px;text-align:right;">95.3%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">4</td><td style="padding:6px 8px;font-weight:600;">Japan</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">7.7%</td><td style="padding:6px 8px;text-align:right;">14.4%</td><td style="padding:6px 8px;text-align:right;">23.5%</td><td style="padding:6px 8px;text-align:right;">92.7%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">5</td><td style="padding:6px 8px;font-weight:600;">Spain</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">5.8%</td><td style="padding:6px 8px;text-align:right;">11.1%</td><td style="padding:6px 8px;text-align:right;">20.2%</td><td style="padding:6px 8px;text-align:right;">93.7%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">6</td><td style="padding:6px 8px;font-weight:600;">Algeria</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">5.1%</td><td style="padding:6px 8px;text-align:right;">10.0%</td><td style="padding:6px 8px;text-align:right;">19.4%</td><td style="padding:6px 8px;text-align:right;">82.1%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">7</td><td style="padding:6px 8px;font-weight:600;">Portugal</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">5.0%</td><td style="padding:6px 8px;text-align:right;">10.1%</td><td style="padding:6px 8px;text-align:right;">19.7%</td><td style="padding:6px 8px;text-align:right;">88.8%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">8</td><td style="padding:6px 8px;font-weight:600;">Senegal</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">4.3%</td><td style="padding:6px 8px;text-align:right;">9.2%</td><td style="padding:6px 8px;text-align:right;">18.7%</td><td style="padding:6px 8px;text-align:right;">81.0%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">9</td><td style="padding:6px 8px;font-weight:600;">Ivory Coast</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">3.1%</td><td style="padding:6px 8px;text-align:right;">6.9%</td><td style="padding:6px 8px;text-align:right;">13.9%</td><td style="padding:6px 8px;text-align:right;">86.0%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">10</td><td style="padding:6px 8px;font-weight:600;">Belgium</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">3.0%</td><td style="padding:6px 8px;text-align:right;">6.5%</td><td style="padding:6px 8px;text-align:right;">14.3%</td><td style="padding:6px 8px;text-align:right;">78.8%</td></tr>
+</table></div>
+
+<div style="background:#161b22;padding:20px;border-radius:8px;margin-top:30px;">
+<h2 style="color:#e6edf3;margin-top:0;">Model Validation — Backtest on Past Tournaments</h2>
+<p style="color:#8b949e;font-size:13px;">Predicting each tournament from data strictly before its start. Lower Brier / RPS = better. Outcome accuracy = % correct W/D/L picks.</p>
+<table style="width:100%;border-collapse:collapse;color:#e6edf3;">
+<tr style="border-bottom:1px solid #30363d;"><th style="text-align:left;padding:8px;">Tournament</th><th style="text-align:right;padding:8px;">Matches</th><th style="text-align:right;padding:8px;">Brier ↓</th><th style="text-align:right;padding:8px;">Log Loss ↓</th><th style="text-align:right;padding:8px;">RPS ↓</th><th style="text-align:right;padding:8px;">Accuracy ↑</th></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">2022 World Cup</td><td style="padding:6px 8px;text-align:right;">64</td><td style="padding:6px 8px;text-align:right;">0.647</td><td style="padding:6px 8px;text-align:right;">1.075</td><td style="padding:6px 8px;text-align:right;">0.230</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">45.3%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">Euro 2024</td><td style="padding:6px 8px;text-align:right;">51</td><td style="padding:6px 8px;text-align:right;">0.609</td><td style="padding:6px 8px;text-align:right;">1.017</td><td style="padding:6px 8px;text-align:right;">0.192</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">51.0%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">Copa America 2024</td><td style="padding:6px 8px;text-align:right;">32</td><td style="padding:6px 8px;text-align:right;">0.553</td><td style="padding:6px 8px;text-align:right;">0.931</td><td style="padding:6px 8px;text-align:right;">0.178</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">56.2%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">2018 World Cup</td><td style="padding:6px 8px;text-align:right;">128</td><td style="padding:6px 8px;text-align:right;">0.607</td><td style="padding:6px 8px;text-align:right;">1.017</td><td style="padding:6px 8px;text-align:right;">0.218</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">50.8%</td></tr>
+<tr style="border-bottom:1px solid #21262d;"><td style="padding:6px 8px;">Euro 2020</td><td style="padding:6px 8px;text-align:right;">102</td><td style="padding:6px 8px;text-align:right;">0.575</td><td style="padding:6px 8px;text-align:right;">0.969</td><td style="padding:6px 8px;text-align:right;">0.188</td><td style="padding:6px 8px;text-align:right;color:#3fb950;">52.0%</td></tr>
+</table></div>
+
+
+<div style="background:#161b22;padding:20px;border-radius:8px;margin-top:30px;color:#8b949e;font-size:13px;">
+<h2 style="color:#e6edf3;margin-top:0;">Methodology & Limitations</h2>
+<p><b>Model:</b> FiveThirtyEight-style ELO (goal-difference modifier) + recency-weighted attack/defense ratings (2-year half-life) + Poisson goal model with home/neutral adjustment.</p>
+<p><b>Bracket:</b> The R32, R16, QF, SF, and 3rd-place match all follow the OFFICIAL FIFA 2026 structure from the schedule PDF. The 8 best 3rd-placed teams fill the 3rd-slots via bipartite matching that respects FIFA's per-slot eligibility constraints (e.g., slot M76 can only take 3rds from C/E/F/H/I).</p>
+<p><b>Knockouts:</b> Regulation draw rate is halved to reflect extra time + penalties resolving many regulation ties. Penalty outcomes are weighted by regulation win expectancy.</p>
+<p><b>Limitations:</b> No individual player data — star players, injuries, manager changes, and locker-room dynamics are not captured. The recency weighting (2-year half-life) over-credits recent form: Morocco rated higher than ELO would suggest due to 2022 WC run.</p>
+</div>
+
+</div>
+</body>
+</html>
