@@ -498,18 +498,18 @@ class WorldCupPredictor:
         if predictions is None:
             predictions = self.predict_tournament(ref_date)
 
-        if len(results.group_match_predictions) > 0:
-            results.group_match_predictions.to_csv(
+        if len(predictions.group_match_predictions) > 0:
+            predictions.group_match_predictions.to_csv(
                 OUT_DIR / "group_match_predictions.csv", index=False
             )
 
-        if len(results.tournament_probs) > 0:
-            results.tournament_probs.to_csv(
+        if len(predictions.tournament_probs) > 0:
+            predictions.tournament_probs.to_csv(
                 OUT_DIR / "tournament_probabilities.csv", index=False
             )
 
-        if len(results.group_position_probs) > 0:
-            results.group_position_probs.to_csv(
+        if len(predictions.group_position_probs) > 0:
+            predictions.group_position_probs.to_csv(
                 OUT_DIR / "group_position_probabilities.csv", index=False
             )
 
@@ -531,10 +531,10 @@ class WorldCupPredictor:
             "cutoff": str(ref_date or date.today()),
             "n_simulations": self.n_simulations,
             "league_avg_goals": self._league_avg,
-            "backtest": results.backtest_metrics,
+            "backtest": predictions.backtest_metrics,
             "top10_champions": [
                 {"team": t, "p_win": p}
-                for t, p in sorted(results.champion_probs.items(), key=lambda x: -x[1])[:10]
+                for t, p in sorted(predictions.champion_probs.items(), key=lambda x: -x[1])[:10]
             ],
             "groups": {letter: teams for letter, teams in self._groups.items()},
         }
