@@ -53,13 +53,12 @@ def run_predictions(predictor: WorldCupPredictor, ref_date=None, show_backtest=T
 
 
 def main():
+    import sys
     parser = argparse.ArgumentParser(description="World Cup 2026 predictor")
     parser.add_argument("--load-results", type=Path, help="Path to CSV with match results")
     parser.add_argument("--date", type=str, help="Reference date (YYYY-MM-DD)")
-    parser.add_argument("--backtest", action="store_true", help="Show backtest after predictions")
-    parser.add_argument("--add-result", nargs=5, metavar=("DATE", "HOME", "AWAY", "HSCORE", "ASCORE"),
-                        help="Add a single result: DATE HOME TEAM AWAY HSCORE AS")
-    parser.add_argument("--sims", type=int, default=20000, help="Number of Monte Carlo simulations")
+    parser.add_argument("--sims", type=int, default=5000, help="Number of Monte Carlo simulations")
+    parser.add_argument("--no-backtrack", action="store_true", help="Don't show backtest metrics")
     args = parser.parse_args()
 
     predictor = WorldCupPredictor(n_simulations=args.sims)
@@ -68,19 +67,8 @@ def main():
         n = predictor.load_actuals(args.load_results)
         print(f"Loaded {n} results from {args.load_results}")
 
-    if args.add_result:
-        d, h, a, hs, as_ = args.add_result
-        predictor.add_result(
-            match_date=pd.Timestamp(d).date(),
-            home_team=h,
-            away_team=a,
-            home_score=int(hs),
-            away_score=int(as_),
-        )
-        print(f"Added result: {h} {hs}-{as_} {a}")
-
     ref_date = pd.Timestamp(args.date).date() if args.date else None
-    run_predictions(predictor, ref_date)
+    run_predictions(predictor, ref_date, show_backtest=not args.no_backtrack)
 
 
 if __name__ == "__main__":

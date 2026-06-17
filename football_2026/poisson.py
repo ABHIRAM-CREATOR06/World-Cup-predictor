@@ -188,12 +188,13 @@ def match_outcome_probs(
     ga = poisson.pmf(np.arange(max_goals + 1), lam_a)
     matrix = np.outer(gh, ga)
 
-    if rho > 0:
+    if rho != 0:
+        rho_mat = np.zeros((max_goals + 1, max_goals + 1))
         for i in range(max_goals + 1):
             for j in range(max_goals + 1):
                 if i > 0 and j > 0:
-                    corr_correction = rho * np.sqrt(gh[i] * ga[j])
-                    matrix[i, j] = max(0, gh[i] * ga[j] + corr_correction * np.sqrt(gh[i] * ga[j]))
+                    rho_mat[i, j] = min(gh[i] * ga[j], rho)
+        matrix = np.maximum(0, matrix + rho_mat)
         matrix = matrix / matrix.sum()
 
     ph = float(np.tril(matrix, -1).sum())

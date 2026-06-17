@@ -236,11 +236,12 @@ class WorldCupPredictor:
         matrix = np.outer(gh, ga)
 
         if RHO > 0:
+            rho_mat = np.zeros((max_goals + 1, max_goals + 1))
             for i in range(max_goals + 1):
                 for j in range(max_goals + 1):
                     if i > 0 and j > 0:
-                        corr_correction = RHO * np.sqrt(gh[i] * ga[j])
-                        matrix[i, j] = max(0, gh[i] * ga[j] + corr_correction * np.sqrt(gh[i] * ga[j]))
+                        rho_mat[i, j] = min(gh[i] * ga[j], RHO)
+            matrix = np.maximum(0, matrix + rho_mat)
             matrix = matrix / matrix.sum()
 
         ph = float(np.tril(matrix, -1).sum())
@@ -293,26 +294,15 @@ class WorldCupPredictor:
         results_sorted = sorted(self.user_results, key=lambda r: r.date)
 
         rows = []
-        cached_state = {}
         for ur in results_sorted:
-            date_key = ur.date.isoformat()
-            if date_key not in cached_state:
-                ref_date = pd.Timestamp(ur.date) - pd.Timedelta(days=1)
-                past = df[df["date"] < ref_date]
-                elo_res = compute_elo(past)
-                att, defe, lavg = self._estimate_ratings_improved(past, ref_date=ref_date)
-                cached_state[date_key] = {"elo": elo_res.ratings, "att": att, "defe": defe, "lavg": lavg}
-            else:
-                elo = cached_state[date_key]["elo"]
-                att = cached_state[date_key]["att"]
-                defe = cached_state[date_key]["defe"]
-                lavg = cached_state[date_key]["lavg"]
+            ref_date = pd.Timestamp(ur.date) - pd.Timedelta(days=1)
+            past = df[df["date"] < ref_date]
+
+            elo_res = compute_elo(past)
+            elo = elo_res.ratings
+            att, defe, lavg = self._estimate_ratings_improved(past, ref_date=ref_date)
 
             h, a = ur.home_team, ur.away_team
-            elo = cached_state[date_key]["elo"]
-            att = cached_state[date_key]["att"]
-            defe = cached_state[date_key]["defe"]
-            lavg = cached_state[date_key]["lavg"]
             elo_diff = elo.get(h, INITIAL_ELO) - elo.get(a, INITIAL_ELO)
 
             p = self._match_outcome_probs_improved(h, a, att, defe, lavg, neutral=True, elo_diff=elo_diff)
