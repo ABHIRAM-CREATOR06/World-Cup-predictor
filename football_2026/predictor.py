@@ -19,6 +19,8 @@ from data import load_results, load_former_names, build_name_map, normalize_team
 from elo import compute_elo, INITIAL_ELO
 from simulator import precompute_pair_cache, simulate_tournament, R32_BRACKET
 
+RHO = 0.15  # Goal correlation for bivariate Poisson
+
 
 OUT_DIR = Path(__file__).parent / "out"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -233,11 +235,11 @@ class WorldCupPredictor:
         ga = poisson.pmf(np.arange(max_goals + 1), lam_a)
         matrix = np.outer(gh, ga)
 
-        if rho > 0 and rho < 1:
+        if RHO > 0:
             for i in range(max_goals + 1):
                 for j in range(max_goals + 1):
                     if i > 0 and j > 0:
-                        corr_correction = rho * np.sqrt(gh[i] * ga[j])
+                        corr_correction = RHO * np.sqrt(gh[i] * ga[j])
                         matrix[i, j] = max(0, gh[i] * ga[j] + corr_correction * np.sqrt(gh[i] * ga[j]))
             matrix = matrix / matrix.sum()
 
@@ -291,16 +293,26 @@ class WorldCupPredictor:
         results_sorted = sorted(self.user_results, key=lambda r: r.date)
 
         rows = []
+        cached_state = {}
         for ur in results_sorted:
-            ref_date = pd.Timestamp(ur.date) - pd.Timedelta(days=1)
-            past = df[df["date"] < ref_date]
-
-            elo_res = compute_elo(past)
-            elo = elo_res.ratings
-
-            att, defe, lavg = self._estimate_ratings_improved(past, ref_date=ref_date)
+            date_key = ur.date.isoformat()
+            if date_key not in cached_state:
+                ref_date = pd.Timestamp(ur.date) - pd.Timedelta(days=1)
+                past = df[df["date"] < ref_date]
+                elo_res = compute_elo(past)
+                att, defe, lavg = self._estimate_ratings_improved(past, ref_date=ref_date)
+                cached_state[date_key] = {"elo": elo_res.ratings, "att": att, "defe": defe, "lavg": lavg}
+            else:
+                elo = cached_state[date_key]["elo"]
+                att = cached_state[date_key]["att"]
+                defe = cached_state[date_key]["defe"]
+                lavg = cached_state[date_key]["lavg"]
 
             h, a = ur.home_team, ur.away_team
+            elo = cached_state[date_key]["elo"]
+            att = cached_state[date_key]["att"]
+            defe = cached_state[date_key]["defe"]
+            lavg = cached_state[date_key]["lavg"]
             elo_diff = elo.get(h, INITIAL_ELO) - elo.get(a, INITIAL_ELO)
 
             p = self._match_outcome_probs_improved(h, a, att, defe, lavg, neutral=True, elo_diff=elo_diff)
@@ -429,7 +441,7 @@ class WorldCupPredictor:
 
         return probs, pos_probs, champion_counts
 
-    def predict_tournament(self, ref_date: Optional[date] = None) -> PredictionResults:
+    def predict_tournament(self, ref_date: Optional[date] = None, skip_mc: bool = False) -> PredictionResults:
         """Run full prediction pipeline and return structured results."""
         if ref_date is None:
             ref_date = date.today()
@@ -439,6 +451,19 @@ class WorldCupPredictor:
 
         if self.user_results:
             self._backtest_metrics = self.backtest_user_results()
+
+        if skip_mc:
+            return PredictionResults(
+                group_match_predictions=group_matches,
+                tournament_probs=pd.DataFrame(),
+                group_position_probs=pd.DataFrame(),
+                elo_ratings=self._elo_ratings,
+                attack_ratings=self._attack_ratings,
+                defense_ratings=self._defense_ratings,
+                league_avg_goals=self._league_avg,
+                champion_probs={},
+                backtest_metrics=self._backtest_metrics,
+            )
 
         tournament_probs, pos_probs, champion_counts = self.run_monte_carlo()
 
@@ -482,29 +507,34 @@ class WorldCupPredictor:
         """Save all prediction outputs to CSV/JSON files."""
         results = self.predict_tournament(ref_date)
 
-        results.group_match_predictions.to_csv(
-            OUT_DIR / "group_match_predictions.csv", index=False
-        )
+        if len(results.group_match_predictions) > 0:
+            results.group_match_predictions.to_csv(
+                OUT_DIR / "group_match_predictions.csv", index=False
+            )
 
-        results.tournament_probs.to_csv(
-            OUT_DIR / "tournament_probabilities.csv", index=False
-        )
+        if len(results.tournament_probs) > 0:
+            results.tournament_probs.to_csv(
+                OUT_DIR / "tournament_probabilities.csv", index=False
+            )
 
-        results.group_position_probs.to_csv(
-            OUT_DIR / "group_position_probabilities.csv", index=False
-        )
+        if len(results.group_position_probs) > 0:
+            results.group_position_probs.to_csv(
+                OUT_DIR / "group_position_probabilities.csv", index=False
+            )
 
-        elo_df = pd.DataFrame(
-            sorted([(t, e) for t, e in self._elo_ratings.items() if t in self._all_teams], key=lambda x: -x[1]),
-            columns=["team", "elo"]
-        )
-        elo_df.to_csv(OUT_DIR / "elo_snapshot_2026.csv", index=False)
+        if self._elo_ratings and self._all_teams:
+            elo_df = pd.DataFrame(
+                sorted([(t, e) for t, e in self._elo_ratings.items() if t in self._all_teams], key=lambda x: -x[1]),
+                columns=["team", "elo"]
+            )
+            elo_df.to_csv(OUT_DIR / "elo_snapshot_2026.csv", index=False)
 
-        ad_df = pd.DataFrame([
-            {"team": t, "attack": self._attack_ratings.get(t, 1.0), "defense": self._defense_ratings.get(t, 1.0)}
-            for t in self._all_teams
-        ]).sort_values("attack", ascending=False)
-        ad_df.to_csv(OUT_DIR / "attack_defense_ratings.csv", index=False)
+        if self._attack_ratings and self._defense_ratings and self._all_teams:
+            ad_df = pd.DataFrame([
+                {"team": t, "attack": self._attack_ratings.get(t, 1.0), "defense": self._defense_ratings.get(t, 1.0)}
+                for t in self._all_teams
+            ]).sort_values("attack", ascending=False)
+            ad_df.to_csv(OUT_DIR / "attack_defense_ratings.csv", index=False)
 
         summary = {
             "cutoff": str(ref_date or date.today()),
@@ -545,7 +575,7 @@ class WorldCupPredictor:
 
 
 if __name__ == "__main__":
-    predictor = WorldCupPredictor()
+    predictor = WorldCupPredictor(n_simulations=3000)  # Faster for testing
     results = predictor.predict_tournament()
     print("Top 10 championship probabilities:")
     for _, row in results.tournament_probs.head(10).iterrows():
