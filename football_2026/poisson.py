@@ -20,6 +20,9 @@ import pandas as pd
 
 LEAGUE_AVG_GOALS = 1.35  # ~ long-run goals scored per team per game (full internationals)
 
+# Correlation parameter for bivariate Poisson (positive correlation between teams' goal counts)
+RHO = 0.15
+
 # Recency half-life: matches older than 2*HALF_LIFE days have ~25% the weight
 HALF_LIFE_DAYS = 730  # 2 years
 
@@ -172,6 +175,7 @@ def match_outcome_probs(
     neutral: bool = False,
     elo_diff: float | None = None,
     max_goals: int = 8,
+    rho: float = RHO,
 ) -> dict:
     """Compute (p_home, p_draw, p_away) and full score matrix up to max_goals.
 
