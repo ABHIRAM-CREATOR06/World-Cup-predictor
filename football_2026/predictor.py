@@ -439,9 +439,6 @@ class WorldCupPredictor:
 
         group_matches = self.predict_group_matches()
 
-        if self.user_results:
-            self._backtest_metrics = self.backtest_user_results()
-
         if skip_mc:
             return PredictionResults(
                 group_match_predictions=group_matches,
@@ -452,8 +449,11 @@ class WorldCupPredictor:
                 defense_ratings=self._defense_ratings,
                 league_avg_goals=self._league_avg,
                 champion_probs={},
-                backtest_metrics=self._backtest_metrics,
+                backtest_metrics=None,
             )
+
+        if self.user_results:
+            self._backtest_metrics = self.backtest_user_results()
 
         tournament_probs, pos_probs, champion_counts = self.run_monte_carlo()
 
