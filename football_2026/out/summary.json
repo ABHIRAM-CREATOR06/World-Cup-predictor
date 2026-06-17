@@ -2,47 +2,55 @@
   "cutoff": "2026-06-17",
   "n_simulations": 1500,
   "league_avg_goals": 1.375988051829187,
-  "backtest": null,
+  "backtest": {
+    "n_matches": 16,
+    "outcome_accuracy": 0.3125,
+    "top_score_accuracy": 0.3125,
+    "brier": 0.6908423222749445,
+    "log_loss": 1.1057551860260273,
+    "mae_home_goals": 1.2684686272982273,
+    "mae_away_goals": 0.4750891432829095
+  },
   "top10_champions": [
     {
       "team": "Morocco",
-      "p_win": 0.188
+      "p_win": 0.15666666666666668
     },
     {
       "team": "Argentina",
-      "p_win": 0.13733333333333334
+      "p_win": 0.13066666666666665
     },
     {
       "team": "England",
-      "p_win": 0.09333333333333334
+      "p_win": 0.084
     },
     {
       "team": "Japan",
-      "p_win": 0.07733333333333334
-    },
-    {
-      "team": "Portugal",
-      "p_win": 0.05333333333333334
+      "p_win": 0.08
     },
     {
       "team": "Spain",
-      "p_win": 0.05266666666666667
+      "p_win": 0.06733333333333333
     },
     {
       "team": "Algeria",
-      "p_win": 0.052
+      "p_win": 0.050666666666666665
+    },
+    {
+      "team": "Portugal",
+      "p_win": 0.048666666666666664
     },
     {
       "team": "Senegal",
-      "p_win": 0.04
+      "p_win": 0.04066666666666666
     },
     {
-      "team": "Belgium",
-      "p_win": 0.034
+      "team": "Ivory Coast",
+      "p_win": 0.03266666666666666
     },
     {
       "team": "Norway",
-      "p_win": 0.027333333333333334
+      "p_win": 0.03266666666666666
     }
   ],
   "groups": {
