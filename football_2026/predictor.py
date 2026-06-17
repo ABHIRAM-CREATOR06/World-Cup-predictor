@@ -16,7 +16,7 @@ import pandas as pd
 from scipy.stats import poisson
 
 from data import load_results, load_former_names, build_name_map, normalize_teams, identify_2026_groups
-from elo import compute_elo, INITIAL_ELO, _win_expectancy, _gd_mult, IMPORTANCE, K_BASE
+from elo import compute_elo, INITIAL_ELO
 from simulator import precompute_pair_cache, simulate_tournament, R32_BRACKET
 
 
@@ -206,7 +206,6 @@ class WorldCupPredictor:
         neutral: bool = False,
         elo_diff: float | None = None,
         max_goals: int = 8,
-        rho: float = 0.15,
     ) -> dict:
         """Bivariate Poisson model with correlation (rho) for improved accuracy.
 
@@ -354,11 +353,12 @@ class WorldCupPredictor:
             "top_score_accuracy": float(bt["actual_top_match"].mean()),
             "brier": float(bt["brier"].mean()),
             "log_loss": float(bt["log_loss"].mean()),
-            "mae_lambda": float(
-                np.mean(np.abs(
-                    (bt["lambda_h"] - bt["score"].str.split("-").str[0].astype(int)).abs() +
-                    (bt["lambda_a"] - bt["score"].str.split("-").str[1].astype(int)).abs()
-                ))
+            "mae_home_goals": float(
+                np.mean(np.abs(bt["lambda_h"] - bt["score"].str.split("-").str[0].astype(int)))
+            ),
+            "mae_away_goals": float(
+                np.mean(np.abs(bt["lambda_a"] - bt["score"].str.split("-").str[1].astype(int)))
+            ),
         }
         return self._backtest_metrics
 
