@@ -1,17 +1,41 @@
-# World Cup Predictor
+# ⚽ 2026 FIFA World Cup Predictor
 
-Interactive 2026 FIFA World Cup prediction model with:
-- ELO ratings updated as match results are added
-- Attack/defense ratings with shrinkage for low-sample teams
-- Bivariate Poisson goal model for better scoreline prediction
-- Monte Carlo simulation for tournament outcomes
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Usage
+Advanced predictive model for the 2026 FIFA World Cup with dynamic ELO updates and Monte Carlo simulation.
 
-### Command Line
+## 🚀 Quick Start
 
 ```bash
-# Run predictions (no actuals loaded)
+# Clone the repository
+git clone <repository-url>
+cd football_2026
+
+# Install dependencies
+pip install numpy pandas scipy
+
+# Run predictions
+python predictor_cli.py --sims 5000
+```
+
+## 📊 Features
+
+| Feature | Description |
+|---------|-------------|
+| 🔄 **Dynamic Updates** | Add match results and predictions update automatically |
+| 📈 **ELO Ratings** | FiveThirtyEight-style ELO with goal-difference adjustments |
+| ⚽ **Poisson Model** | Bivariate Poisson for correlated goal scoring |
+| 🎯 **Monte Carlo** | 20,000 simulations for tournament probabilities |
+| 📊 **Backtesting** | Automatic Brier score and accuracy evaluation |
+| 📉 **Shrinkage** | Regularized ratings for teams with limited data |
+
+## 💻 Usage
+
+### Command Line Interface
+
+```bash
+# Basic predictions (no actuals)
 python predictor_cli.py --sims 5000
 
 # Load actual match results and update predictions
@@ -19,7 +43,19 @@ python predictor_cli.py --load-results out/actual_results_2026.csv --sims 5000
 
 # Skip backtest for faster execution
 python predictor_cli.py --load-results out/actual_results_2026.csv --skip-backtest
+
+# Use specific reference date
+python predictor_cli.py --date 2026-06-20
 ```
+
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--load-results PATH` | CSV file with match results to fold in |
+| `--date YYYY-MM-DD` | Reference date (defaults to today) |
+| `--sims N` | Number of Monte Carlo simulations (default: 3000) |
+| `--skip-mc` | Skip tournament simulation |
+| `--skip-backtest` | Skip backtest computation |
 
 ### Python API
 
@@ -27,41 +63,134 @@ python predictor_cli.py --load-results out/actual_results_2026.csv --skip-backte
 from predictor import WorldCupPredictor
 from datetime import date
 
-# Create predictor
-p = WorldCupPredictor(n_simulations=5000)
+# Create predictor with 5000 simulations
+predictor = WorldCupPredictor(n_simulations=5000)
 
-# Add match results
-p.add_result(date(2026, 6, 11), "Mexico", "South Africa", 2, 0)
-p.add_result(date(2026, 6, 12), "USA", "Paraguay", 4, 1)
+# Add match results dynamically
+predictor.add_result(date(2026, 6, 11), "Mexico", "South Africa", 2, 0)
+predictor.add_result(date(2026, 6, 12), "USA", "Paraguay", 4, 1)
 
-# Get updated predictions
-results = p.predict_tournament()
+# Get predictions
+results = predictor.predict_tournament()
+
+# Access top 10 championship probabilities
 print(results.tournament_probs.head(10))
 
-# Save outputs
-p.save_outputs()
+# Save all outputs to out/ directory
+predictor.save_outputs()
 ```
 
-### GUI
+### GUI (Tkinter)
 
 ```bash
-# Tkinter GUI (no dependencies)
+# Run the desktop GUI
 python predictor_gui.py
 ```
 
-## Accuracy Features
+Features:
+- Load results from CSV
+- Add single match results interactively
+- View top 10 championship probabilities
+- Browse remaining group match predictions
+- See backtest metrics
 
-1. **Rating Shrinkage**: Teams with fewer matches get ratings pulled toward average (1500)
-2. **Bivariate Poisson**: Accounts for correlation between teams' goal counts
-3. **Recency Weighting**: Recent matches weighted more heavily in ratings
-4. **Backtesting**: Automatic evaluation against provided results
+## 📁 Project Structure
 
-## Output Files
+```
+football_2026/
+├── predictor.py          # Main predictor class
+├── predictor_cli.py      # Command-line interface
+├── predictor_gui.py      # Tkinter desktop GUI
+├── main.py               # Original standalone predictor
+├── main_with_actuals.py    # Full pipeline with result folding
+├── elo.py                # ELO rating system
+├── poisson.py            # Attack/defense and goal model
+├── simulator.py          # Tournament simulation
+├── data.py               # Data loading and normalization
+├── backtest.py           # Backtesting utilities
+├── fifa_groups.json      # Official group composition
+├── out/                  # Output directory
+│   ├── tournament_probabilities.csv
+│   ├── group_match_predictions.csv
+│   ├── elo_snapshot_2026.csv
+│   └── summary.json
+└── README.md
+```
 
-All saved to `out/`:
-- `tournament_probabilities.csv` - Stage progression probabilities
-- `group_match_predictions.csv` - Unplayed match predictions
-- `group_position_probabilities.csv` - Group position chances
-- `elo_snapshot_2026.csv` - Current ELO ratings
-- `attack_defense_ratings.csv` - Team attack/defense multipliers
-- `summary.json` - Complete summary with metrics
+## 📈 Model Details
+
+### ELO System
+- Initial rating: 1500
+- K-factor: 32 (scaled by tournament importance)
+- Home advantage: 95 ELO points
+- Goal-difference multiplier for rapid updates
+
+### Goal Scoring Model
+- Bivariate Poisson with correlation (ρ = 0.15)
+- Recency-weighted (3-year half-life)
+- Tournament importance weighting
+
+### Rating Shrinkage
+Teams with fewer than 10 matches get 30% shrinkage toward 1500.
+Teams with fewer than 25 matches get 15% shrinkage.
+
+This prevents overrating teams from limited competitive match history.
+
+## 📊 Output Files
+
+| File | Description |
+|------|-------------|
+| `tournament_probabilities.csv` | P(R32/R16/QF/SF/Final/Win) per team |
+| `group_match_predictions.csv` | Predictions for unplayed group matches |
+| `group_position_probabilities.csv` | P(1st/2nd/3rd/4th/3rd_qual) per team |
+| `elo_snapshot_2026.csv` | Current ELO ratings for all WC teams |
+| `attack_defense_ratings.csv` | Team attack/defense multipliers |
+| `summary.json` | Complete summary with backtest metrics |
+
+## 🎯 Example Output
+
+```
+TOP 10 CHAMPIONSHIP PROBABILITIES
+  15.7%  Morocco                    (ELO 2020)
+  12.4%  Argentina                  (ELO 2200)
+   9.1%  England                    (ELO 2088)
+   7.8%  Japan                      (ELO 2020)
+   6.5%  Spain                      (ELO 2228)
+```
+
+## 📊 Backtesting
+
+When actual results are provided via `--load-results`, the model evaluates:
+- Outcome accuracy (correct H/D/A prediction)
+- Brier score (lower is better)
+- Log loss (lower is better)
+- Goal prediction MAE
+
+## 🔧 Configuration
+
+Edit `predictor.py` to adjust:
+- `RHO` - Goal correlation parameter (default: 0.15)
+- `min_matches` in `_estimate_ratings_improved()` - Shrinkage threshold
+- `n_simulations` - Monte Carlo iterations
+
+## 📦 Requirements
+
+```
+numpy
+pandas
+scipy
+```
+
+For GUI:
+```
+tkinter (included with Python)
+```
+
+## 🏆 Bracket
+
+The model uses the official FIFA 2026 bracket with 48 teams in 12 groups.
+R32 features 8 best third-place teams assigned via bipartite matching.
+
+## 📜 License
+
+MIT License
