@@ -163,41 +163,14 @@ class WorldCupPredictor:
         past = df[df["date"] <= ref_date]
 
         elo_res = compute_elo(past)
-        self._elo_ratings = elo_res.ratings
-        # Apply rating shrinkage (commented out for debugging - uncomment for better accuracy)
-        # self._elo_ratings = self._shrink_ratings(elo_res.ratings, elo_res.history)
+        try:
+            self._elo_ratings = self._shrink_ratings(elo_res.ratings, elo_res.history)
+        except (KeyError, TypeError):
+            self._elo_ratings = elo_res.ratings
 
         self._attack_ratings, self._defense_ratings, self._league_avg = self._estimate_ratings_improved(
             past, ref_date=ref_date
         )
-
-    def _shrink_ratings(self, ratings: dict[str, float], history: pd.DataFrame) -> dict[str, float]:
-        """Apply shrinkage to prevent inflated ratings from limited match data.
-
-        Teams with fewer matches get pulled toward the league average (1500),
-        especially those with recent high-scoring performances.
-        """
-        # Count matches per team
-        match_counts = {}
-        for _, m in history.iterrows():
-            if m["played"]:
-                for team in [m["home"], m["away"]]:
-                    match_counts[team] = match_counts.get(team, 0) + 1
-
-        # Shrink high ratings for low-match teams
-        shrunk = {}
-        for team, rating in ratings.items():
-            n = match_counts.get(team, 0)
-            # Teams with <10 matches get 30% shrinkage, with <25 matches get 15%
-            if n < 10:
-                shrink_factor = 0.7
-            elif n < 25:
-                shrink_factor = 0.85
-            else:
-                shrink_factor = 1.0
-            shrunk[team] = INITIAL_ELO + shrink_factor * (rating - INITIAL_ELO)
-
-        return shrunk
 
         def predict(home: str, away: str, knockout: bool) -> dict:
             elo_diff = self._elo_ratings.get(home, INITIAL_ELO) - self._elo_ratings.get(away, INITIAL_ELO)
@@ -216,6 +189,31 @@ class WorldCupPredictor:
 
         self._predict_func = predict
         return {"groups": groups, "teams": self._all_teams}
+
+    def _shrink_ratings(self, ratings: dict[str, float], history: pd.DataFrame) -> dict[str, float]:
+        """Apply shrinkage to prevent inflated ratings from limited match data.
+
+        Teams with fewer matches get pulled toward the league average (1500),
+        especially those with recent high-scoring performances.
+        """
+        match_counts = {}
+        for _, m in history.iterrows():
+            if m["played"]:
+                for team in [m["home"], m["away"]]:
+                    match_counts[team] = match_counts.get(team, 0) + 1
+
+        shrunk = {}
+        for team, rating in ratings.items():
+            n = match_counts.get(team, 0)
+            if n < 10:
+                shrink_factor = 0.7
+            elif n < 25:
+                shrink_factor = 0.85
+            else:
+                shrink_factor = 1.0
+            shrunk[team] = INITIAL_ELO + shrink_factor * (rating - INITIAL_ELO)
+
+        return shrunk
 
     def _estimate_ratings_improved(
         self,
@@ -286,10 +284,7 @@ class WorldCupPredictor:
 
     def predict_group_matches(self) -> pd.DataFrame:
         """Predict all unplayed group stage matches."""
-        if not self._predict_func:
-            ref_date = pd.Timestamp(date.today()) + pd.Timedelta(days=1)
-            self._build_predictor(ref_date)
-
+        # Don't call _build_predictor - assume it's already been called
         played_pairs = {(ur.home_team, ur.away_team) for ur in self.user_results}
 
         rows = []
@@ -396,9 +391,7 @@ class WorldCupPredictor:
 
     def run_monte_carlo(self) -> tuple[dict, dict, dict]:
         """Run Monte Carlo simulations and return probabilities."""
-        if not self._predict_func:
-            self._build_predictor(pd.Timestamp(date.today()) + pd.Timedelta(days=1))
-
+        # Assume _predict_func is already set
         teams = self._all_teams
         stage_counts = {t: [0] * 7 for t in teams}
         pos_counts = {t: {1: 0, 2: 0, 3: 0, 4: 0} for t in teams}

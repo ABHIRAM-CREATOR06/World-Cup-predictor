@@ -56,12 +56,11 @@ def main():
     parser = argparse.ArgumentParser(description="World Cup 2026 predictor")
     parser.add_argument("--load-results", type=Path, help="Path to CSV with match results")
     parser.add_argument("--date", type=str, help="Reference date (YYYY-MM-DD)")
-    parser.add_argument("--sims", type=int, default=5000, help="Number of Monte Carlo simulations")
+    parser.add_argument("--sims", type=int, default=3000, help="Number of Monte Carlo simulations")
     parser.add_argument("--skip-mc", action="store_true", help="Skip Monte Carlo (only predictions)")
     parser.add_argument("--skip-backtest", action="store_true", help="Skip backtest computation")
     args = parser.parse_args()
 
-    # Skip backtest by default for performance - use --skip-backtest to enable
     predictor = WorldCupPredictor(n_simulations=args.sims)
 
     if args.load_results:
